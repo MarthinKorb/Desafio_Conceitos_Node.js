@@ -85,4 +85,24 @@ app.post("/repositories/:id/like", (request, response) => {
   return response.json(repository);
 });
 
+app.post("/repositories/:id/unlike", (request, response) => {
+
+  const { id } = request.params;
+
+  const repositoryIndex = repositories.findIndex(el => el.id === id);
+  
+  if (repositoryIndex < 0) {
+    return response.status(400).json({ message: "Invalid ID" });
+  }
+  
+  const repository = repositories[repositoryIndex];
+
+  if(repository.likes <= 0){
+    return response.status(400).json({message: "you got 0 likes"});
+  }
+  repository.likes = repository.likes - 1;
+
+  return response.json(repository);
+});
+
 module.exports = app;
